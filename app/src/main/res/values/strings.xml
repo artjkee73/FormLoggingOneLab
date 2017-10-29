@@ -1,0 +1,39 @@
+<resources>
+
+    <!--Строковые ресурсы общие-->
+
+    <string name="app_name">FormLoggingOneLab</string>
+    <string name="tv_key_activity">Введите специальный ключ</string>
+    <string name="et_key_activity">Введите ключ</string>
+    <string name="btn_key_activity">Подтвердить</string>
+    <string name="tv_login_activity">Добро пожаловать в систему, авторизуйтесь</string>
+    <string name="et_login_login_activity">Логин </string>
+    <string name="et_password_login_activity">Пароль</string>
+    <string name="btn_login_activity">Авторизоваться</string>
+    <string name="btn_change_pass_main_activity">Сменить пароль</string>
+    <string name="btn_about_main_activity">Справка</string>
+    <string name="btn_exit_main_activity">Выход</string>
+    <string name="btn_admin_panel_main_activity">Администрирование</string>
+    <string name="tv_main_activity">Здравствуйте!</string>
+    <string name="et_old_pass_cp_activity">Старый пароль</string>
+    <string name="et_new_pass_cp_activity">Новый пароль*</string>
+    <string name="et_repeat_pass_cp_activity">Повторите пароль</string>
+    <string name="btn_cp_activity">Применить</string>
+    <string name="tv_comment_cp_activity">*Пароль должен содержать строчные и прописные буквы </string>
+    <string name="tv_about_activity">Текст с заданием, позже добавлю </string>
+    <string name="tv_ap_activity">Ввидите имя пользоватля, которого хотитете добавить </string>
+    <string name="et_ap_activity">Введите имя </string>
+    <string name="btn_ap_activity">Добавить </string>
+    <string name="tv_username_ap_activity">Пользователь : username </string>
+    <string name="tv_blocked_ap_activity">Блокировка </string>
+    <string name="tv_limitation_ap_activity">Ограничение пароля </string>
+
+    <string name="tv_username_item_recycler_view">Пользователь</string>
+    <string name="cb_blocked_item_recycler_view">Блокировка</string>
+    <string name="cb_limitation_item_recycler_view">Ограничение пароля</string>
+
+    <!--Строковые ресурс для ошибок -->
+
+    <string name="no_user_e_login_activity">Нет пользователся с таким логин/пароль </string>
+
+</resources>
