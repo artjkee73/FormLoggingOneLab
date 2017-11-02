@@ -1,5 +1,8 @@
 package com.example.artemqa.formloggingonelab.adapter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.artemqa.formloggingonelab.R;
 import com.example.artemqa.formloggingonelab.model.User;
+import com.example.artemqa.formloggingonelab.ui.AdminPanelActivity;
+import com.example.artemqa.formloggingonelab.ui.UserActivity;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -21,10 +26,11 @@ import io.realm.RealmResults;
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CustomViewHolder> {
-    RealmResults<User> itemsList;
-
-    public RecyclerViewAdapter(RealmResults<User> listUsers) {
+    public RealmResults<User> itemsList;
+    public Context mContext;
+    public RecyclerViewAdapter(RealmResults<User> listUsers,Context activityContext) {
         itemsList = listUsers;
+        mContext = activityContext;
     }
 
     @Override
@@ -47,7 +53,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public static class CustomViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    public static class CustomViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
+        private final static String EXTRA_LOGIN ="Login_Extra_ViewHolder";
+        private final static String EXTRA_POSITION ="Position_Extra_ViewHolder";
+        private final static int REQUEST_CODE = 0;
         private final static String LOG ="MyLog";
         private TextView tvUserName;
         private CheckBox cbBlocked, cbLimitation;
@@ -61,6 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             cbLimitation = itemView.findViewById(R.id.cb_limitation_item_recycler_view);
             cbLimitation.setOnCheckedChangeListener(this);
             realm = Realm.getDefaultInstance();
+            itemView.setOnClickListener(this);
 
         }
 
@@ -97,5 +107,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
         }
 
+        @Override
+        public void onClick(View view) {
+            Context context = itemView.getContext();
+            int position = getAdapterPosition();
+            Log.d(LOG,"Выбранная позиция " + position);
+            Intent intent = new Intent(context, UserActivity.class);
+            intent.putExtra(EXTRA_LOGIN,tvUserName.getText().toString());
+            intent.putExtra(EXTRA_POSITION , position);
+            ((Activity) context).startActivityForResult(intent, REQUEST_CODE);
+        }
     }
 }

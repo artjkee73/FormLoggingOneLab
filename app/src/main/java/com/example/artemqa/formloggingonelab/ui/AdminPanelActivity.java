@@ -39,9 +39,8 @@ public class AdminPanelActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RecyclerViewAdapter(getListUsers());
+        adapter = new RecyclerViewAdapter(getListUsers(),AdminPanelActivity.this);
         recyclerView.setAdapter(adapter);
-
 
 
         btnAddUser.setOnClickListener(new View.OnClickListener() {
@@ -51,17 +50,22 @@ public class AdminPanelActivity extends AppCompatActivity {
                 User user = realm.where(User.class)
                         .equalTo("mLogin", etLoginUser.getText().toString())
                         .findFirst();
-                if (user == null) {
-                    final User newUser = new User(etLoginUser.getText().toString(), Utils.NEW_USER_PASSWORD, Utils.NEW_USER_IS_BLOCKED, Utils.NEW_USER_IS_LIMITATION);
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            realm.copyToRealmOrUpdate(newUser);
-                        }
-                    });
+                if (etLoginUser.getText().toString().equals("")) {
+                    Toast.makeText(AdminPanelActivity.this, "Нелья добавить пользователя с пустым логином", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(AdminPanelActivity.this, "Пользователь с таким логином уже существует", Toast.LENGTH_SHORT).show();
+                    if (user == null) {
+                        final User newUser = new User(etLoginUser.getText().toString(), Utils.NEW_USER_PASSWORD, Utils.NEW_USER_IS_BLOCKED, Utils.NEW_USER_IS_LIMITATION);
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.copyToRealmOrUpdate(newUser);
+                            }
+                        });
+                    } else {
+                        Toast.makeText(AdminPanelActivity.this, "Пользователь с таким логином уже существует", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
             }
         });
 

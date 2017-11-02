@@ -10,7 +10,7 @@ public class Utils {
     public final static String ADMIN_PASSWORD = "1";
     public final static boolean ADMIN_IS_BLOCKED = false;
     public final static boolean ADMIN_IS_LIMITATION = false;
-    public final static String NEW_USER_PASSWORD = "1";
+    public final static String NEW_USER_PASSWORD = "";
     public final static boolean NEW_USER_IS_BLOCKED = false;
     public final static boolean NEW_USER_IS_LIMITATION = false;
 
