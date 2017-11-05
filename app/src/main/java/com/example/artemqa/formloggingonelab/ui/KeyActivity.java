@@ -28,7 +28,7 @@ public class KeyActivity extends AppCompatActivity {
         btnKeyActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Integer.parseInt(etKeyActivity.getText().toString()) == Utils.ACCESS_APPLICATION_KEY ){
+                if(etKeyActivity.getText().toString().equals(Utils.ACCESS_APPLICATION_KEY )){
                     Intent intent = new Intent(KeyActivity.this,LoginActivity.class);
                     startActivity(intent);
                 }

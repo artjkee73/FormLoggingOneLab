@@ -1,5 +1,6 @@
 package com.example.artemqa.formloggingonelab.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,5 +76,18 @@ public class AdminPanelActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
         return realm.where(User.class)
                 .findAll();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            switch (requestCode){
+                case RecyclerViewAdapter.CustomViewHolder.REQUEST_CODE:
+                    int position = data.getIntExtra(UserActivity.EXTRA_POSITION,0);
+                    adapter.notifyItemChanged(position);
+                    break;
+            }
+        }
     }
 }

@@ -53,16 +53,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public static class CustomViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
-        private final static String EXTRA_LOGIN ="Login_Extra_ViewHolder";
-        private final static String EXTRA_POSITION ="Position_Extra_ViewHolder";
-        private final static int REQUEST_CODE = 0;
+    public static class CustomViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener{
+        public final static String EXTRA_LOGIN ="Login_Extra_ViewHolder";
+        public final static String EXTRA_POSITION ="Position_Extra_ViewHolder";
+        public final static int REQUEST_CODE = 0;
         private final static String LOG ="MyLog";
         private TextView tvUserName;
         private CheckBox cbBlocked, cbLimitation;
         Realm realm;
 
-        private CustomViewHolder(View itemView) {
+        private CustomViewHolder(final View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tv_username_item_recycler_view);
             cbBlocked = itemView.findViewById(R.id.cb_blocked_item_recycler_view);
@@ -70,7 +70,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             cbLimitation = itemView.findViewById(R.id.cb_limitation_item_recycler_view);
             cbLimitation.setOnCheckedChangeListener(this);
             realm = Realm.getDefaultInstance();
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Context context =  itemView.getContext();
+                    int position = getAdapterPosition();
+                    Log.d(LOG,"Выбранная позиция " + position);
+                    Intent intent = new Intent(context, UserActivity.class);
+                    intent.putExtra(EXTRA_LOGIN,tvUserName.getText().toString());
+                    intent.putExtra(EXTRA_POSITION , position);
+                    ((Activity) context).startActivityForResult(intent, REQUEST_CODE);
+                }
+            });
 
         }
 
@@ -107,15 +118,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
         }
 
-        @Override
-        public void onClick(View view) {
-            Context context = itemView.getContext();
-            int position = getAdapterPosition();
-            Log.d(LOG,"Выбранная позиция " + position);
-            Intent intent = new Intent(context, UserActivity.class);
-            intent.putExtra(EXTRA_LOGIN,tvUserName.getText().toString());
-            intent.putExtra(EXTRA_POSITION , position);
-            ((Activity) context).startActivityForResult(intent, REQUEST_CODE);
-        }
     }
 }

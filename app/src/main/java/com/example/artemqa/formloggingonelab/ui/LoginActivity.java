@@ -50,10 +50,16 @@ public class LoginActivity extends AppCompatActivity {
                         .findFirst();
 
                 if (user != null) {
+                    if(user.isBlocked() == false){
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra(LOGIN_USER, user.getLogin());
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(LoginActivity.this, "Для вас вход ограничен администратором", Toast.LENGTH_LONG).show();
+                    }
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra(LOGIN_USER, user.getLogin());
-                    startActivity(intent);
+
 
 
                 } else {

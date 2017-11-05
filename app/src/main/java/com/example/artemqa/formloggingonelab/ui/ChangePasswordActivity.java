@@ -12,11 +12,13 @@ import android.widget.Toast;
 import com.example.artemqa.formloggingonelab.R;
 import com.example.artemqa.formloggingonelab.model.User;
 
+import java.util.regex.Pattern;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ChangePasswordActivity extends AppCompatActivity {
-    public final static String LOG ="MyLog";
+    public final static String LOG = "MyLog";
     EditText etOldPassword, etNewPassword, etRepeatPassword;
     Button btnOk;
     Realm realm;
@@ -36,21 +38,25 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                final User user = realm.where(User.class).
+                        equalTo("mLogin", getLoginIntent())
+                        .findFirst();
+
                 if (etOldPassword.getText().toString().equals(getPasswordUser(getLoginIntent()))) {
                     if (etNewPassword.getText().toString().equals(etRepeatPassword.getText().toString())) {
-                        final User user = realm.where(User.class).
-                                equalTo("mLogin", getLoginIntent())
-                                .findFirst();
-
-                        realm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                user.setPassword(etNewPassword.getText().toString());
-                                realm.copyToRealmOrUpdate(user);
-                            }
-                        });
-
-                        Toast.makeText(ChangePasswordActivity.this, "Пароль успешно изменён на : " + etNewPassword.getText().toString(), Toast.LENGTH_SHORT).show();
+                        if (getFlagValidationPasswordOnLimitation(etNewPassword.getText().toString(), user)) {
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    user.setPassword(etNewPassword.getText().toString());
+                                    realm.copyToRealmOrUpdate(user);
+                                }
+                            });
+                            Toast.makeText(ChangePasswordActivity.this, "Пароль успешно изменён на : " + etNewPassword.getText().toString(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ChangePasswordActivity.this, "Ваш пароль должен содержать знаки препинания и буквы", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(ChangePasswordActivity.this, "Некорретно введён повторно новый пароль", Toast.LENGTH_SHORT).show();
                     }
@@ -77,4 +83,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
         User user = results.where().findFirst();
         return user.getPassword();
     }
+
+    private boolean getFlagValidationPasswordOnLimitation(String password, User user) {
+        if (!user.isPasLimitation()) {
+            return true;
+        } else if ((Pattern.matches("^[a-zA-Zа-яА-Я.,;:\'\"?!]+$" ,password)) ) {
+            return true;
+        } else return false;
+    }
 }
+
