@@ -35,7 +35,7 @@ public class Utils {
     public static String toMD4(final String s) {
         final String MD4 = "MD4";
         try {
-            // Create MD5 Hash
+            // Create MD4 Hash
             MessageDigest digest = java.security.MessageDigest
                     .getInstance(MD4);
             digest.update(s.getBytes());

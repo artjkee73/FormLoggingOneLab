@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.artemqa.formloggingonelab.R;
 import com.example.artemqa.formloggingonelab.model.User;
+import com.example.artemqa.formloggingonelab.util.Utils;
 
 import java.util.regex.Pattern;
 
@@ -43,13 +44,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         equalTo("mLogin", getLoginIntent())
                         .findFirst();
 
-                if (etOldPassword.getText().toString().equals(getPasswordUser(getLoginIntent()))) {
+                if (Utils.encryptStr(Utils.toMD4(etOldPassword.getText().toString())).equals(getPasswordUser(getLoginIntent()))) {
                     if (etNewPassword.getText().toString().equals(etRepeatPassword.getText().toString())) {
-                        if (getFlagValidationPasswordOnLimitation(etNewPassword.getText().toString(), user)) {
+                        if (isPasLimitationUser(etNewPassword.getText().toString(), user)) {
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    user.setPassword(etNewPassword.getText().toString());
+                                    user.setPassword(Utils.encryptStr(Utils.toMD4(etNewPassword.getText().toString())));
                                     realm.copyToRealmOrUpdate(user);
                                 }
                             });
@@ -84,10 +85,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         return user.getPassword();
     }
 
-    private boolean getFlagValidationPasswordOnLimitation(String password, User user) {
+    private boolean isPasLimitationUser(String password, User user) {
         if (!user.isPasLimitation()) {
             return true;
-        } else if ((Pattern.matches("^[a-zA-Zа-яА-Я.,;:\'\"?!]+$" ,password)) ) {
+        } else if ((Pattern.matches("^[a-zA-Zа-яА-Я.,;:\'\"?!]+$", password))) {
             return true;
         } else return false;
     }

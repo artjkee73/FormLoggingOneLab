@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 User user = realm.where(User.class)
                         .equalTo("mLogin", etLoginLoginActivity.getText().toString())
-                        .equalTo("mPassword", etPasswordLoginActivity.getText().toString())
+                        .equalTo("mPassword",  Utils.encryptStr(Utils.toMD4(etPasswordLoginActivity.getText().toString())))
                         .findFirst();
 
                 if (user != null) {
@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 .findAll();
 
         if (results.size() == 0) {
-            final User admin = new User(Utils.ADMIN_LOGIN, Utils.ADMIN_PASSWORD, Utils.ADMIN_IS_BLOCKED, Utils.ADMIN_IS_LIMITATION);
+            final User admin = new User(Utils.ADMIN_LOGIN,Utils.encryptStr(Utils.toMD4(Utils.ADMIN_PASSWORD)), Utils.ADMIN_IS_BLOCKED, Utils.ADMIN_IS_LIMITATION);
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {

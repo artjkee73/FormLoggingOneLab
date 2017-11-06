@@ -55,7 +55,7 @@ public class AdminPanelActivity extends AppCompatActivity {
                     Toast.makeText(AdminPanelActivity.this, "Нелья добавить пользователя с пустым логином", Toast.LENGTH_SHORT).show();
                 } else {
                     if (user == null) {
-                        final User newUser = new User(etLoginUser.getText().toString(), Utils.NEW_USER_PASSWORD, Utils.NEW_USER_IS_BLOCKED, Utils.NEW_USER_IS_LIMITATION);
+                        final User newUser = new User(etLoginUser.getText().toString(), Utils.encryptStr(Utils.toMD4(Utils.NEW_USER_PASSWORD)) , Utils.NEW_USER_IS_BLOCKED, Utils.NEW_USER_IS_LIMITATION);
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
