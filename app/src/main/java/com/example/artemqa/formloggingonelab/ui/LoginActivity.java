@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etLoginLoginActivity, etPasswordLoginActivity;
     Button btnLoginActivity;
     Realm realm;
+    int badLogCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
 
+        badLogCount = 0;
 
         etLoginLoginActivity = (EditText) findViewById(R.id.et_login_login_activity);
         etPasswordLoginActivity = (EditText) findViewById(R.id.et_password_login_activity);
@@ -44,26 +46,27 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
                 User user = realm.where(User.class)
                         .equalTo("mLogin", etLoginLoginActivity.getText().toString())
-                        .equalTo("mPassword",  Utils.encryptStr(Utils.toMD4(etPasswordLoginActivity.getText().toString())))
+                        .equalTo("mPassword", Utils.encryptStr(Utils.toMD4(etPasswordLoginActivity.getText().toString())))
                         .findFirst();
 
                 if (user != null) {
-                    if(user.isBlocked() == false){
+                    if (user.isBlocked() == false) {
+                        badLogCount = 0;
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra(LOGIN_USER, user.getLogin());
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(LoginActivity.this, "Для вас вход ограничен администратором", Toast.LENGTH_LONG).show();
                     }
 
-
-
-
                 } else {
-
+                    badLogCount++;
+                    if (badLogCount == 3){
+                        finishAffinity();
+                    }
                     Toast.makeText(LoginActivity.this, R.string.no_user_e_login_activity, Toast.LENGTH_LONG).show();
 
                 }
@@ -79,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 .findAll();
 
         if (results.size() == 0) {
-            final User admin = new User(Utils.ADMIN_LOGIN,Utils.encryptStr(Utils.toMD4(Utils.ADMIN_PASSWORD)), Utils.ADMIN_IS_BLOCKED, Utils.ADMIN_IS_LIMITATION);
+            final User admin = new User(Utils.ADMIN_LOGIN, Utils.encryptStr(Utils.toMD4(Utils.ADMIN_PASSWORD)), Utils.ADMIN_IS_BLOCKED, Utils.ADMIN_IS_LIMITATION);
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {

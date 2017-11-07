@@ -16,11 +16,14 @@
     <string name="btn_admin_panel_main_activity">Администрирование</string>
     <string name="tv_main_activity">Здравствуйте!</string>
     <string name="et_old_pass_cp_activity">Старый пароль</string>
-    <string name="et_new_pass_cp_activity">Новый пароль*</string>
+    <string name="et_new_pass_cp_activity">Новый пароль</string>
     <string name="et_repeat_pass_cp_activity">Повторите пароль</string>
     <string name="btn_cp_activity">Применить</string>
-    <string name="tv_comment_cp_activity">*Пароль должен содержать строчные и прописные буквы </string>
-    <string name="tv_about_activity">Текст с заданием, позже добавлю </string>
+    <string name="tv_about_activity">
+        Автор : Иревлин Артём , ИСЭбд-41\n
+        Вариант №4.Ограничение на выбираемые пароли - Наличие только букв и знаков препинания\n
+        Режим шифрования OFB, нет добавления случайного значения к ключу , алгоритм хеширования MD4\n
+    </string>
     <string name="tv_ap_activity">Ввидите имя пользователя, которого хотитете добавить </string>
     <string name="et_ap_activity">Введите имя </string>
     <string name="btn_ap_activity">Добавить </string>

@@ -56,7 +56,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             });
                             Toast.makeText(ChangePasswordActivity.this, "Пароль успешно изменён на : " + etNewPassword.getText().toString(), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(ChangePasswordActivity.this, "Ваш пароль должен содержать знаки препинания и буквы", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePasswordActivity.this, "Ваш пароль должен содержать только знаки препинания и буквы", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(ChangePasswordActivity.this, "Некорретно введён повторно новый пароль", Toast.LENGTH_SHORT).show();
